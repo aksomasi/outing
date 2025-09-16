@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require('path');      
 const app = express();
 let data = 1;
 // Simple API
@@ -12,10 +13,9 @@ app.get("/getData", (req, res) => {
 });
 
 // --- serve Angular build ---
-const dist = path.join(__dirname, "..", "ui", "dist");
-const browser = path.join(dist, "YOUR_APP_NAME", "browser"); // see note below
-app.use(express.static(browser));
-app.get("*", (_req, res) => res.sendFile(path.join(browser, "index.html")));
+const browserDir = path.join(__dirname, '..', 'ion-outing', 'dist', 'ion-outing', 'browser');
+app.use(express.static(browserDir));
+app.get('*', (_req, res) => res.sendFile(path.join(browserDir, 'index.html')));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
