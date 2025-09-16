@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const PORT = 3000;
 let data = 1;
 // Simple API
 app.get("/hello", (req, res) => {
