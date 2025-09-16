@@ -2,6 +2,49 @@ const express = require("express");
 const path = require('path');      
 const app = express();
 let data = 1;
+let players = [];
+
+// ✅ MUST come before any routes
+app.use(express.json());                         // parses application/json
+app.use(express.urlencoded({ extended: true })); // parses form posts (optional in dev)
+
+
+// ✅ New API: add player
+app.post("/api/addPlayer", (req, res) => {
+  const { name, gender } = req.body;
+
+  if (!name || !gender) {
+    return res
+      .status(400)
+      .json({ error: "Name and gender are required" });
+  }
+
+  const exists = players.find(
+    (p) => p.name === name && p.gender === gender
+  );
+
+  if (exists) {
+    return res.json({ status: "existed", player: exists });
+  }
+
+  const newPlayer = { name, gender };
+  players.push(newPlayer);
+
+  res.json({ status: "created", player: newPlayer });
+});
+
+
+// ✅ New API: get players
+app.get("/api/players", (req, res) => {
+  res.json({ players });
+});
+
+
+
+
+
+
+
 // Simple API
 app.get("/hello", (req, res) => {
 	data = data + 1;

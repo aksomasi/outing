@@ -1,7 +1,7 @@
 <main class="app card bounce">
       <div class="card-header">
         <span class="dot"></span>
-        <span class="card-title">Player Manager</span>
+        <span class="card-title">ION Team Outing Planner</span>
       </div>
       <div class="card-body">
         <div class="row grid-3">
@@ -9,42 +9,41 @@
           <section class="card">
             <div class="card-header">
               <span class="dot"></span>
-              <span class="card-title">Add Player</span>
+              <span class="card-title">Add Yourself</span>
             </div>
             <div class="card-body">
-              <form action="#added" method="get" onsubmit="return true">
+              <form >
                 <div>
-                  <label for="name">Player Name</label>
-                  <input id="name" type="text" name="name" placeholder="e.g., Alex" required />
+                  <label for="name">Full Name</label>
+                  <input id="name" type="text" [(ngModel)]="name" name="name" placeholder="e.g., Alex" required />
                 </div>
                 <div>
-                  <label for="gender">Gender</label>
-                  <select id="gender" name="gender" required>
-                    <option value="M">Male ♂</option>
+                  <label for="gender" >Gender</label>
+                  <select id="gender" name="gender" required [(ngModel)]="gender">
+                    <option value="M" >Male ♂</option>
                     <option value="F">Female ♀</option>
                   </select>
                 </div>
                 <div style="align-self:end; display:flex; gap:10px;">
-                  <button class="btn" type="submit">Add</button>
+                  <button class="btn" type="submit" (click)="savePlayer()">Add</button>
                 </div>
               </form>
-              <p class="hint">This is a CSS‑only demo: the form triggers a toast but does not store data. Use the template with JS to make it functional.</p>
             </div>
           </section>
 
-          <!-- Roster (static sample) -->
+          <!-- Roster (list of players) -->
           <section class="card">
             <div class="card-header">
               <span class="dot"></span>
-              <span class="card-title">Player Roster (Sample)</span>
+              <span class="card-title">Players  - ({{players?.length}})</span>
             </div>
             <div class="card-body roster">
-              <div class="player"><span class="badge male">♂</span><span class="name">Arjun</span></div>
-              <div class="player"><span class="badge female">♀</span><span class="name">Isha</span></div>
-              <div class="player"><span class="badge male">♂</span><span class="name">Vikram</span></div>
-              <div class="player"><span class="badge female">♀</span><span class="name">Sara</span></div>
-              <div class="player"><span class="badge male">♂</span><span class="name">Rahul</span></div>
-              <div class="player"><span class="badge female">♀</span><span class="name">Nisha</span></div>
+              <div class="player" *ngFor="let player of players"
+              >
+                <span class="badge" class="badge male" *ngIf="player.gender === 'M'" >♀</span>
+                <span class="badge" class="badge female" *ngIf="player.gender === 'F'">♂</span>
+                <span class="name">{{player.name}}</span>
+              </div>
             </div>
           </section>
 
@@ -103,4 +102,4 @@
 
     <!-- Toast (shown when URL has #added) -->
     <div class="toast">✅ Player added! (Demo toast — wire up with JS to persist.)</div>
-  </div>
+  
