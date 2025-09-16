@@ -1,0 +1,12 @@
+{
+  "name": "fullstack",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix ion-outing install && npm --prefix ion-outing run build",
+    "start": "node ion-outing-backend/index.js"
+  },
+  "engines": { "node": "20.x" },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
