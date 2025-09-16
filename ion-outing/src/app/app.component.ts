@@ -14,14 +14,16 @@ export class AppComponent {
   data: any = '';
   count = 0;
   constructor(private http: HttpClient) {
-    this.http.get('http://localhost:3000/hello').subscribe((data: any)=>{
+    const host = location.origin
+    this.http.get(host + '/hello').subscribe((data: any)=>{
       console.log('data', data);
       this.data = data.message;
     })
   }
 
   getCount(): void {
-    this.http.get('http://localhost:3000/getData').subscribe((data: any)=>{
+        const host = location.origin
+    this.http.get(host + '/getData').subscribe((data: any)=>{
       this.count = data.data;
     })
   }
