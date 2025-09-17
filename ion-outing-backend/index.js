@@ -3,6 +3,8 @@ const path = require('path');
 const app = express();
 let data = 1;
 let players = [];
+let status = 'Not Shuffled';
+let shuffledTeams = [];
 
 // ✅ MUST come before any routes
 app.use(express.json());                         // parses application/json
@@ -41,6 +43,11 @@ app.get("/api/players", (req, res) => {
 
 
 
+
+// Simple API
+app.get("/api/refresh", (req, res) => {
+    res.json({ players, status, shuffledTeams }); // content-type: application/json
+});
 
 
 

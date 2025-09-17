@@ -4,15 +4,17 @@
         <span class="card-title">ION Team Outing Planner</span>
       </div>
       <div class="card-body">
-        <div class="row grid-3">
+        <div class="row" *ngIf="status !== 'Shuffled'">
           <!-- Form (decorative; submits to #added for CSS toast) -->
           <section class="card">
             <div class="card-header">
               <span class="dot"></span>
-              <span class="card-title">Add Yourself</span>
+              <span class="card-title" *ngIf="!isCreated">Add Yourself</span>
+               <span class="card-title" *ngIf="isCreated">Welcome To ION Outing, {{name}}!</span>
             </div>
             <div class="card-body">
-              <form >
+              <h4 *ngIf="isCreated">"Please wait... Other players are still adding their names. As soon as everyone joins, we’ll start shuffling the teams!"</h4>
+              <form *ngIf="!isCreated">
                 <div>
                   <label for="name">Full Name</label>
                   <input id="name" type="text" [(ngModel)]="name" name="name" placeholder="e.g., Alex" required />
@@ -30,7 +32,7 @@
               </form>
             </div>
           </section>
-
+<br>
           <!-- Roster (list of players) -->
           <section class="card">
             <div class="card-header">
@@ -46,29 +48,12 @@
               </div>
             </div>
           </section>
-
-          <!-- Controls -->
-          <section class="card">
-            <div class="card-header">
-              <span class="dot"></span>
-              <span class="card-title">Controls</span>
-            </div>
-            <div class="card-body">
-              <div class="controls">
-                <input id="shuffle" type="checkbox" hidden />
-                <label class="switch" for="shuffle" title="Toggle pre-baked layout">
-                  <span class="knob"></span>
-                </label>
-                <span class="switch-label">Shuffle (CSS alt layout)</span>
-                <a class="btn secondary" href="#added" title="Show toast">Show Toast</a>
-              </div>
-              <p class="hint">The toggle simulates a shuffle by swapping pre-defined orders (no real randomness without JS).</p>
-            </div>
-          </section>
         </div>
 
+        <br>
+
         <!-- Teams -->
-        <section class="teams" id="teams">
+        <section class="teams" id="teams" *ngIf="status === 'Shuffled'">
           <div class="team" data-team="A">
             <div class="team-header">
               <span class="team-title">Team A</span>
@@ -99,7 +84,4 @@
         </section>
       </div>
     </main>
-
-    <!-- Toast (shown when URL has #added) -->
-    <div class="toast">✅ Player added! (Demo toast — wire up with JS to persist.)</div>
   
