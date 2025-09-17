@@ -1,9 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { interval, Subscription } from 'rxjs';
+import { filter, interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ import { interval, Subscription } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnDestroy{
+export class AppComponent implements OnDestroy, OnInit {
   title = 'ion-outing';
   data: any = '';
   count = 0;
@@ -23,13 +23,8 @@ players : any[] = [];
 teams : any[] = [];
   private refreshSub!: Subscription;
   isCreated = false
-
-  constructor(private http: HttpClient) {
-    // const host = location.origin
-    // this.http.get(host + '/hello').subscribe((data: any)=>{
-    //   console.log('data', data);
-    //   this.data = data.message;
-    // })
+  isAdmin = false;
+  constructor(private http: HttpClient, private router: Router) {
     this.getPlayers();
     const name = localStorage.getItem('uerName');
     if(name){
@@ -39,6 +34,17 @@ teams : any[] = [];
         this.refreshSub = interval(3000).subscribe(() => this.refresh());
 
   }
+  ngOnInit(): void {
+      this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe((event: any) => {
+      if (event.url.includes('admin')) {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
+    });
+    }
   ngOnDestroy(): void {
  if (this.refreshSub) {
       this.refreshSub.unsubscribe();
@@ -68,6 +74,14 @@ teams : any[] = [];
   refresh(): void {
         const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
     this.http.get(host + '/api/refresh').subscribe((data: any)=>{
+      this.status = data.status;
+      this.players = data.players;
+    })
+  }
+
+  shuffle(): void {
+        const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
+    this.http.get(host + '/api/shuffle').subscribe((data: any)=>{
       this.status = data.status;
       this.players = data.players;
     })

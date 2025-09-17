@@ -44,10 +44,18 @@ app.get("/api/players", (req, res) => {
 
 
 
-// Simple API
+// refresh API
 app.get("/api/refresh", (req, res) => {
     res.json({ players, status, shuffledTeams }); // content-type: application/json
 });
+
+app.get("/api/shuffle", async (req, res) => {
+    this.status = 'Shuffle Started';
+    await sleep(12000); // sleep 10 seconds
+    this.status = 'Shuffle Completed';
+    res.json({ players, status, shuffledTeams }); // content-type: application/json
+});
+
 
 
 
@@ -61,6 +69,10 @@ app.get("/hello", (req, res) => {
 app.get("/getData", (req, res) => {
     res.json({ data }); // content-type: application/json
 });
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 // --- serve Angular build ---
 // --- your APIs ---

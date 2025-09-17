@@ -32,6 +32,7 @@
               </form>
             </div>
           </section>
+                            <button class="btn" (click)="shuffle()" *ngIf="isAdmin">Shuffle</button>
 <br>
           <!-- Roster (list of players) -->
           <section class="card">
@@ -51,9 +52,12 @@
         </div>
 
         <br>
+        <div class="row" *ngIf="status === 'Shuffle Started'">
+       <h1>Loading Indicator</h1>
+        </div>
 
         <!-- Teams -->
-        <section class="teams" id="teams" *ngIf="status === 'Shuffled'">
+        <section class="teams" id="teams" *ngIf="status === 'Shuffle Completed'">
           <div class="team" data-team="A">
             <div class="team-header">
               <span class="team-title">Team A</span>
