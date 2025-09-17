@@ -103,13 +103,20 @@ inner = ['Eshan','Falguni','Gopal','Hemant','Ipsita','Jatin','Kavya','Laksh','Ma
       this.players = data.players;
     })  
   }
+  currentTeam: any;
+  otherTeams: any[] = [];
   refresh(): void {
         const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
     this.http.get(host + '/api/refresh').subscribe((data: any)=>{
       this.status = data.status;
       this.players = data.players;
-      this.teams = data.shuffledTeams;
-    })
+      if(this.status === 'Shuffle Completed' && data.shuffledTeams.length > 0){ 
+              this.teams = data.shuffledTeams;
+             const { currentTeam, otherTeams} = this.splitByName(this.name, this.teams);
+              this.currentTeam = currentTeam;
+              this.otherTeams = otherTeams;
+      }
+    });
   }
 
   shuffle(): void {
@@ -141,4 +148,16 @@ inner = ['Eshan','Falguni','Gopal','Hemant','Ipsita','Jatin','Kavya','Laksh','Ma
       this.players = data.players;
     })
   }
+
+  
+ splitByName(name: string, teams: any[]) {
+  const idx = teams.findIndex(t => t.members.some((m:any) => m.name === name));
+  if (idx === -1) {
+    return { currentTeam: null, otherTeams: teams };
+  }
+  return {
+    currentTeam: teams[idx],
+    otherTeams: teams.filter((_, i) => i !== idx),
+  };
+}
 }

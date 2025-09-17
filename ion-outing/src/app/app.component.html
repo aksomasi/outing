@@ -59,8 +59,32 @@
           <span class="card-title" *ngIf="isCreated">Welcome To ION Outing, {{name}}!</span>
         </div>
         <div class="card-body">
-          <h4 *ngIf="isCreated">"Please wait... Other players are still adding their names. As soon as everyone joins,
+          <h4 *ngIf="isCreated && status !== 'Shuffle Completed'">"Please wait... Other players are still adding their names. As soon as everyone joins,
             we’ll start shuffling the teams!"</h4>
+            <h2 *ngIf="status === 'Shuffle Completed'">
+              Congractulations! Your team has been created.
+            </h2>
+            <section class="teams" id="teams" *ngIf="status === 'Shuffle Completed'">
+      <div class="team" data-team="A">
+        <div class="team-header">
+          <span class="team-title"> {{currentTeam.name}}</span>
+          <span class="pill"><span class="dot"></span> 
+          Balanced
+            <span class="tag m" > {{currentTeam.counts.M}} &nbsp; ♂</span>
+              <span class="tag f" >{{currentTeam.counts.M}} &nbsp; ♀</span>
+        </span>
+        </div>
+        <div class="team-body">
+          <ul *ngFor="let player of currentTeam.members">
+            <li class="li"><span> {{player.name}}
+              <span class="tag m" *ngIf="player.gender === 'M'">♂</span>
+              <span class="tag f" *ngIf="player.gender === 'F'">♀</span>
+              </span>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </section>
           <form *ngIf="!isCreated">
             <div>
               <label for="name">Full Name</label>
@@ -95,11 +119,13 @@
 
     <!-- Teams -->
     <section class="teams" id="teams" *ngIf="status === 'Shuffle Completed'">
-      <div class="team" data-team="A" *ngFor="let team of teams">
+      <div class="team" data-team="A" *ngFor="let team of otherTeams">
         <div class="team-header">
           <span class="team-title"> {{team.name}}</span>
           <span class="pill"><span class="dot"></span> 
-          Balanced
+          <p *ngIf="team.counts.M === team.counts.F">Balanced</p>
+                    <p *ngIf="team.counts.M !== team.counts.F"> Not Balanced</p>
+
             <span class="tag m" > {{team.counts.M}} &nbsp; ♂</span>
               <span class="tag f" >{{team.counts.M}} &nbsp; ♀</span>
         </span>
