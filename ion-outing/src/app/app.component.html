@@ -6,6 +6,11 @@
       <div class="card-body">
         <div class="row" *ngIf="status !== 'Shuffled'">
           <!-- Form (decorative; submits to #added for CSS toast) -->
+           <div style="align-self:end; display:flex; gap:10px;">
+                  <button class="btn" (click)="addNew()" *ngIf="isAdmin">Add New Player</button>
+                                    <button class="btn" (click)="addNew()" *ngIf="isAdmin">Reset Shuffel</button>
+
+                </div>
           <section class="card">
             <div class="card-header">
               <span class="dot"></span>
@@ -32,7 +37,11 @@
               </form>
             </div>
           </section>
+          <button class="btn" (click)="lock()" *ngIf="isAdmin">Lock</button>
                             <button class="btn" (click)="shuffle()" *ngIf="isAdmin">Shuffle</button>
+                              <div class="row" *ngIf="status === 'Shuffle Started'">
+       <h1>Loading Indicator</h1>
+        </div>
 <br>
           <!-- Roster (list of players) -->
           <section class="card">
@@ -52,9 +61,7 @@
         </div>
 
         <br>
-        <div class="row" *ngIf="status === 'Shuffle Started'">
-       <h1>Loading Indicator</h1>
-        </div>
+      
 
         <!-- Teams -->
         <section class="teams" id="teams" *ngIf="status === 'Shuffle Completed'">

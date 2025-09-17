@@ -50,9 +50,15 @@ app.get("/api/refresh", (req, res) => {
 });
 
 app.get("/api/shuffle", async (req, res) => {
-    this.status = 'Shuffle Started';
+    status = 'Shuffle Started';
     await sleep(12000); // sleep 10 seconds
-    this.status = 'Shuffle Completed';
+    status = 'Shuffle Completed';
+    res.json({ players, status, shuffledTeams }); // content-type: application/json
+});
+
+
+app.get("/api/lock", async (req, res) => {
+    status = 'Shuffle Started';
     res.json({ players, status, shuffledTeams }); // content-type: application/json
 });
 
