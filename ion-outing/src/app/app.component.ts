@@ -5,11 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { filter, interval, Subscription } from 'rxjs';
 import { MultiLayerSpinnerComponent } from './components/spinner/multi-layer-spinner.component';
+import { VerticalCarouselComponent } from './components/carousel/vertical-carousel.component';
+import { WaitingBannerComponent } from './components/waiting/waiting-banner.component';
+import { BuzzerComponent } from './components/buzzer/carousel/buzzer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,FormsModule,CommonModule , HttpClientModule, MultiLayerSpinnerComponent],
+  imports: [RouterOutlet,FormsModule,CommonModule ,BuzzerComponent, WaitingBannerComponent,  VerticalCarouselComponent, HttpClientModule, MultiLayerSpinnerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -22,14 +25,18 @@ export class AppComponent implements OnDestroy, OnInit {
   status = '';
 players : any[] = [];
 teams : any[] = [];
+teamsCount = 4;
   private refreshSub!: Subscription;
   isCreated = false
   isAdmin = false;
+  isBuzzer = false;
+  pics: any[] = [];
   outer = ['Anil','Bhavna','Chitra','Deepak','Esha','Farhan','Gita','Harish','Indu','Jai','Kiran','Lata','Mahesh','Nisha','Omkar'];
 middle = ['Pooja','Qadir','Rhea','Sanjay','Tanvi','Uday','Vaishali','Wasim','Xenia','Yash','Zara','Aarav','Bindi','Charan','Divya'];
 inner = ['Eshan','Falguni','Gopal','Hemant','Ipsita','Jatin','Kavya','Laksh','Maya','Neeraj','Ovi','Pranav','Ragini','Suresh','Tara'];
   constructor(private http: HttpClient, private router: Router) {
     this.getPlayers();
+    this.getPics();
     const name = localStorage.getItem('uerName');
     if(name){
       this.name = name;
@@ -37,6 +44,13 @@ inner = ['Eshan','Falguni','Gopal','Hemant','Ipsita','Jatin','Kavya','Laksh','Ma
     }
         this.refreshSub = interval(3000).subscribe(() => this.refresh());
 
+  }
+
+  private getPics(): void {
+            const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
+      this.http.get(host + '/api/pics').subscribe((data: any)=>{
+      this.pics = data.files;
+    })
   }
   ngOnInit(): void {
       this.router.events
@@ -57,11 +71,6 @@ inner = ['Eshan','Falguni','Gopal','Hemant','Ipsita','Jatin','Kavya','Laksh','Ma
 
   savePlayer(): void{
         const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
-//    fetch(host + '/api/addPlayer', {
-//   method: 'POST',
-//   headers: { 'Content-Type': 'application/json' }, // 👈 required
-//   body: JSON.stringify({ name: this.name, gender: this.gender })
-// });
         this.http.post(host + '/api/addPlayer', {name: this.name, gender: this.gender}).subscribe((data: any)=>{
      localStorage.setItem('uerName', this.name);
      this.isCreated = true;
@@ -69,6 +78,25 @@ inner = ['Eshan','Falguni','Gopal','Hemant','Ipsita','Jatin','Kavya','Laksh','Ma
     })
   }
 
+  deletePlayer(name: string): void{
+        const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
+        this.http.delete(host + '/api/player/' + name).subscribe((data: any)=>{
+     this.getPlayers();
+    })
+  }
+
+  stop(): void{
+       const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
+        this.http.get(host + '/api/stop').subscribe((data: any)=>{
+     this.getPlayers();
+    })
+  }
+   reset(): void{
+       const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
+        this.http.get(host + '/api/reset').subscribe((data: any)=>{
+     this.getPlayers();
+    })
+  }
   getPlayers(): void {
         const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
     this.http.get(host + '/api/players').subscribe((data: any)=>{
@@ -80,12 +108,13 @@ inner = ['Eshan','Falguni','Gopal','Hemant','Ipsita','Jatin','Kavya','Laksh','Ma
     this.http.get(host + '/api/refresh').subscribe((data: any)=>{
       this.status = data.status;
       this.players = data.players;
+      this.teams = data.shuffledTeams;
     })
   }
 
   shuffle(): void {
         const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
-    this.http.get(host + '/api/shuffle').subscribe((data: any)=>{
+    this.http.post(host + '/api/shuffle', {teamsCount: this.teamsCount}).subscribe((data: any)=>{
       this.status = data.status;
       this.players = data.players;
     })

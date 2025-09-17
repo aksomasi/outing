@@ -1,0 +1,20 @@
+<div class="vc">
+  <button class="nav up" (click)="prev()" aria-label="Previous">&#9650;</button>
+
+  <div class="viewport"
+       (pointerdown)="onPointerDown($event)"
+       (pointermove)="onPointerMove($event)"
+       (pointerup)="onPointerUp($event)"
+       (pointercancel)="onPointerUp($event)">
+    <div #track
+         class="track moving"
+         [style.--index]="current()"
+         [style.height.%]="(looped.length * 100) / (slidesPerView || 1)">
+      <div class="slide" *ngFor="let src of looped; let i = index">
+        <img [src]="src" [alt]="'photo-'+i" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+
+  <button class="nav down" (click)="next()" aria-label="Next">&#9660;</button>
+</div>

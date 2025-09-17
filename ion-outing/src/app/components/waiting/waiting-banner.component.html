@@ -1,0 +1,28 @@
+<div class="banner">
+  <!-- Animated slideshow layers -->
+  <div class="slides">
+    <div
+      class="slide"
+      *ngFor="let src of images; let i = index; trackBy: trackByIdx"
+      [ngStyle]="{
+        '--i': i,
+        '--count': images.length,
+        '--duration': duration + 's',
+        '--fade': fade + 's',
+        'background-image': 'url(' + src + ')'
+      }">
+    </div>
+  </div>
+
+  <!-- Color wash + vignette for text legibility -->
+  <div class="overlay"></div>
+
+  <!-- Foreground text -->
+  <div class="content">
+    <h1 class="headline">
+      {{ title }}
+      <span class="sparkle">✦</span>
+    </h1>
+    <p class="subtext">{{ subtitle }}</p>
+  </div>
+</div>

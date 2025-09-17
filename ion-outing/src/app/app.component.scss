@@ -1,0 +1,54 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #e10032, #8e0e00, #ff512f, #dd2476);
+  background-size: 300% 300%;
+  animation: gradientShift 10s ease infinite;
+  color: #fff;
+  padding: 2rem;
+}
+
+.content {
+  max-width: 800px;
+  animation: fadeIn 2s ease-out forwards;
+}
+
+.headline {
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.3;
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(255,255,255,0.5), 0 0 20px #ffea00;
+}
+
+.highlight {
+  color: #ffea00;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.subtext {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  margin-top: 1rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* Animations */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ffea00, 0 0 20px #ffea00; }
+  to   { text-shadow: 0 0 20px #ffea00, 0 0 40px #ffea00; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
