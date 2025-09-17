@@ -1,110 +1,103 @@
 <main class="app card bounce">
-      <div class="card-header">
-        <span class="dot"></span>
-        <span class="card-title">ION Team Outing Planner</span>
+  <div class="card-header">
+    <span class="dot"></span>
+    <span class="card-title">ION Team Outing Planner</span>
+  </div>
+  <div class="card-body">
+    <div class="row" *ngIf="status !== 'Shuffled'">
+      <!-- Form (decorative; submits to #added for CSS toast) -->
+      <div style="align-self:end; display:flex; gap:10px;">
+        <button class="btn" (click)="addNew()" *ngIf="isAdmin">Add New Player</button>
+        <button class="btn" (click)="restShuffle()" *ngIf="isAdmin">Reset Shuffel</button>
+
       </div>
-      <div class="card-body">
-        <div class="row" *ngIf="status !== 'Shuffled'">
-          <!-- Form (decorative; submits to #added for CSS toast) -->
-           <div style="align-self:end; display:flex; gap:10px;">
-                  <button class="btn" (click)="addNew()" *ngIf="isAdmin">Add New Player</button>
-                                    <button class="btn" (click)="restShuffle()" *ngIf="isAdmin">Reset Shuffel</button>
-
-                </div>
-          <section class="card">
-            <div class="card-header">
-              <span class="dot"></span>
-              <span class="card-title" *ngIf="!isCreated">Add Yourself</span>
-               <span class="card-title" *ngIf="isCreated">Welcome To ION Outing, {{name}}!</span>
-            </div>
-            <div class="card-body">
-              <h4 *ngIf="isCreated">"Please wait... Other players are still adding their names. As soon as everyone joins, we’ll start shuffling the teams!"</h4>
-              <form *ngIf="!isCreated">
-                <div>
-                  <label for="name">Full Name</label>
-                  <input id="name" type="text" [(ngModel)]="name" name="name" placeholder="e.g., Alex" required />
-                </div>
-                <div>
-                  <label for="gender" >Gender</label>
-                  <select id="gender" name="gender" required [(ngModel)]="gender">
-                    <option value="M" >Male ♂</option>
-                    <option value="F">Female ♀</option>
-                  </select>
-                </div>
-                <div style="align-self:end; display:flex; gap:10px;">
-                  <button class="btn" type="submit" (click)="savePlayer()">Add</button>
-                </div>
-              </form>
-            </div>
-          </section>
-          <button class="btn" (click)="lock()" *ngIf="isAdmin">Lock</button>
-                            <button class="btn" (click)="shuffle()" *ngIf="isAdmin">Shuffle</button>
-                              <div class="row" *ngIf="status === 'Shuffle Started'">
-       <h1>Loading Indicator</h1>
-       <div>
-        <app-multi-layer-spinner *ngIf="status === 'Shuffle Started'"
-[size]="540"
-[r1]="210"
-[r2]="160"
-[r3]="115"
-[outerNames]="outer"
-[middleNames]="middle"
-[innerNames]="inner"
-[showWaiting]="(outer.length + middle.length + inner.length) < 45">
-</app-multi-layer-spinner>
-       </div>
+      <section class="card">
+        <div class="card-header">
+          <span class="dot"></span>
+          <span class="card-title" *ngIf="!isCreated">Add Yourself</span>
+          <span class="card-title" *ngIf="isCreated">Welcome To ION Outing, {{name}}!</span>
         </div>
-<br>
-          <!-- Roster (list of players) -->
-          <section class="card">
-            <div class="card-header">
-              <span class="dot"></span>
-              <span class="card-title">Players  - ({{players?.length}})</span>
+        <div class="card-body">
+          <h4 *ngIf="isCreated">"Please wait... Other players are still adding their names. As soon as everyone joins,
+            we’ll start shuffling the teams!"</h4>
+          <form *ngIf="!isCreated">
+            <div>
+              <label for="name">Full Name</label>
+              <input id="name" type="text" [(ngModel)]="name" name="name" placeholder="e.g., Alex" required />
             </div>
-            <div class="card-body roster">
-              <div class="player" *ngFor="let player of players"
-              >
-                <span class="badge" class="badge male" *ngIf="player.gender === 'M'" >♀</span>
-                <span class="badge" class="badge female" *ngIf="player.gender === 'F'">♂</span>
-                <span class="name">{{player.name}}</span>
-              </div>
+            <div>
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender" required [(ngModel)]="gender">
+                <option value="M">Male ♂</option>
+                <option value="F">Female ♀</option>
+              </select>
             </div>
-          </section>
+            <div style="align-self:end; display:flex; gap:10px;">
+              <button class="btn" type="submit" (click)="savePlayer()">Add</button>
+            </div>
+          </form>
         </div>
-
-        <br>
-      
-
-        <!-- Teams -->
-        <section class="teams" id="teams" *ngIf="status === 'Shuffle Completed'">
-          <div class="team" data-team="A">
-            <div class="team-header">
-              <span class="team-title">Team A</span>
-              <span class="pill"><span class="dot"></span> Balanced</span>
-            </div>
-            <div class="team-body">
-              <ul>
-                <li class="li"><span>Arjun</span><span class="tag m">♂</span></li>
-                <li class="li"><span>Isha</span><span class="tag f">♀</span></li>
-                <li class="li"><span>Vikram</span><span class="tag m">♂</span></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="team" data-team="B">
-            <div class="team-header">
-              <span class="team-title">Team B</span>
-              <span class="pill"><span class="dot"></span> Balanced</span>
-            </div>
-            <div class="team-body">
-              <ul>
-                <li class="li"><span>Sara</span><span class="tag f">♀</span></li>
-                <li class="li"><span>Rahul</span><span class="tag m">♂</span></li>
-                <li class="li"><span>Nisha</span><span class="tag f">♀</span></li>
-              </ul>
-            </div>
-          </div>
-        </section>
+      </section>
+      <button class="btn" (click)="lock()" *ngIf="isAdmin">Lock</button>
+      <button class="btn" (click)="shuffle()" *ngIf="isAdmin">Shuffle</button>
+      <div class="row" *ngIf="status === 'Shuffle Started'">
+        <h1>Loading Indicator</h1>
+        <div>
+          <app-multi-layer-spinner *ngIf="status === 'Shuffle Started'" [size]="540" [r1]="210" [r2]="160" [r3]="115"
+            [outerNames]="outer" [middleNames]="middle" [innerNames]="inner"
+            [showWaiting]="(outer.length + middle.length + inner.length) < 45">
+          </app-multi-layer-spinner>
+        </div>
       </div>
-    </main>
-  
+      <br>
+      <!-- Roster (list of players) -->
+      <section class="card">
+        <div class="card-header">
+          <span class="dot"></span>
+          <span class="card-title">Players - ({{players?.length}})</span>
+        </div>
+        <div class="card-body roster">
+          <div class="player" *ngFor="let player of players">
+            <span class="badge" class="badge male" *ngIf="player.gender === 'M'">♀</span>
+            <span class="badge" class="badge female" *ngIf="player.gender === 'F'">♂</span>
+            <span class="name">{{player.name}}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <br>
+
+
+    <!-- Teams -->
+    <section class="teams" id="teams" *ngIf="status === 'Shuffle Completed'">
+      <div class="team" data-team="A">
+        <div class="team-header">
+          <span class="team-title">Team A</span>
+          <span class="pill"><span class="dot"></span> Balanced</span>
+        </div>
+        <div class="team-body">
+          <ul>
+            <li class="li"><span>Arjun</span><span class="tag m">♂</span></li>
+            <li class="li"><span>Isha</span><span class="tag f">♀</span></li>
+            <li class="li"><span>Vikram</span><span class="tag m">♂</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="team" data-team="B">
+        <div class="team-header">
+          <span class="team-title">Team B</span>
+          <span class="pill"><span class="dot"></span> Balanced</span>
+        </div>
+        <div class="team-body">
+          <ul>
+            <li class="li"><span>Sara</span><span class="tag f">♀</span></li>
+            <li class="li"><span>Rahul</span><span class="tag m">♂</span></li>
+            <li class="li"><span>Nisha</span><span class="tag f">♀</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
