@@ -7,7 +7,7 @@ let data = 1;
 let players = [];
 let status = 'Not Shuffled';
 let shuffledTeams = [];
-
+reset = false;
 // ✅ MUST come before any routes
 app.use(express.json());                         // parses application/json
 app.use(express.urlencoded({ extended: true })); // parses form posts (optional in dev)
@@ -51,6 +51,7 @@ app.get("/api/stop", (req, res) => {
 
 app.get("/api/reset", (req, res) => {
   status = 'Not Shuffled';
+  reset = true;
   players = [];
   shuffledTeams = [];
   res.json({ players });
@@ -78,7 +79,9 @@ app.delete("/api/player/:name", (req, res) => {
 
 // refresh API
 app.get("/api/refresh", (req, res) => {
-    res.json({ players, status, shuffledTeams }); // content-type: application/json
+    const resetFlag = Object.assign({}, reset);
+    reset = false
+    res.json({ players, status,resetFlag, shuffledTeams }); // content-type: application/json
 });
 
 app.post("/api/shuffle", async (req, res) => {

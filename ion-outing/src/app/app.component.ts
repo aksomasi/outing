@@ -110,6 +110,9 @@ inner = ['Eshan','Falguni','Gopal','Hemant','Ipsita','Jatin','Kavya','Laksh','Ma
     this.http.get(host + '/api/refresh').subscribe((data: any)=>{
       this.status = data.status;
       this.players = data.players;
+      if(data.resetFlag){
+        localStorage.removeItem('uerName');
+      }
       if(this.status === 'Shuffle Completed' && data.shuffledTeams.length > 0){ 
               this.teams = data.shuffledTeams;
              const { currentTeam, otherTeams} = this.splitByName(this.name, this.teams);
