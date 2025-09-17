@@ -56,6 +56,11 @@ app.get("/api/shuffle", async (req, res) => {
     res.json({ players, status, shuffledTeams }); // content-type: application/json
 });
 
+app.get("/api/restShuffle", async (req, res) => {
+    status = 'Not Shuffled';
+    res.json({ players, status, shuffledTeams }); // content-type: application/json
+});
+
 
 app.get("/api/lock", async (req, res) => {
     status = 'Shuffle Started';

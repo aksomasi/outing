@@ -87,12 +87,20 @@ teams : any[] = [];
     })
   }
 
+    restShuffle(): void {
+        const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
+    this.http.get(host + '/api/restShuffle').subscribe((data: any)=>{
+      this.status = data.status;
+      this.players = data.players;
+    })
+  }
+
   addNew(): void {
     this.name = '';
     this.isCreated = false;
     localStorage.removeItem('uerName');
   }
-  
+
   lock(): void {
         const host = location.origin === 'http://localhost:4200' ? 'http://localhost:3000' : location.origin
     this.http.get(host + '/api/lock').subscribe((data: any)=>{
