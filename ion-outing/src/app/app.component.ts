@@ -4,11 +4,12 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { filter, interval, Subscription } from 'rxjs';
+import { MultiLayerSpinnerComponent } from './components/spinner/multi-layer-spinner.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,FormsModule,CommonModule , HttpClientModule],
+  imports: [RouterOutlet,FormsModule,CommonModule , HttpClientModule, MultiLayerSpinnerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -24,6 +25,9 @@ teams : any[] = [];
   private refreshSub!: Subscription;
   isCreated = false
   isAdmin = false;
+  outer = ['Anil','Bhavna','Chitra','Deepak','Esha','Farhan','Gita','Harish','Indu','Jai','Kiran','Lata','Mahesh','Nisha','Omkar'];
+middle = ['Pooja','Qadir','Rhea','Sanjay','Tanvi','Uday','Vaishali','Wasim','Xenia','Yash','Zara','Aarav','Bindi','Charan','Divya'];
+inner = ['Eshan','Falguni','Gopal','Hemant','Ipsita','Jatin','Kavya','Laksh','Maya','Neeraj','Ovi','Pranav','Ragini','Suresh','Tara'];
   constructor(private http: HttpClient, private router: Router) {
     this.getPlayers();
     const name = localStorage.getItem('uerName');

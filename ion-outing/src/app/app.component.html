@@ -41,6 +41,18 @@
                             <button class="btn" (click)="shuffle()" *ngIf="isAdmin">Shuffle</button>
                               <div class="row" *ngIf="status === 'Shuffle Started'">
        <h1>Loading Indicator</h1>
+       <div>
+        <app-multi-layer-spinner *ngIf="status === 'Shuffle Started'"
+[size]="540"
+[r1]="210"
+[r2]="160"
+[r3]="115"
+[outerNames]="outer"
+[middleNames]="middle"
+[innerNames]="inner"
+[showWaiting]="(outer.length + middle.length + inner.length) < 45">
+</app-multi-layer-spinner>
+       </div>
         </div>
 <br>
           <!-- Roster (list of players) -->

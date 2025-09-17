@@ -51,7 +51,7 @@ app.get("/api/refresh", (req, res) => {
 
 app.get("/api/shuffle", async (req, res) => {
     status = 'Shuffle Started';
-    await sleep(12000); // sleep 10 seconds
+    await sleep(25000); // sleep 10 seconds
     status = 'Shuffle Completed';
     res.json({ players, status, shuffledTeams }); // content-type: application/json
 });
